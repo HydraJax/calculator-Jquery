@@ -45,6 +45,19 @@
 	
 }
 
+#reset{
+	background: #f1c40f;
+	padding: 15px;
+	width: 60px;
+	height: 30px;
+	margin: 10px;
+	color: white;
+	font-weight: bold;
+	font-size: 2em;
+	text-align: center;
+
+}
+
 #nums{
 	display: flex;
 	flex-direction: row;

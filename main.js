@@ -35,8 +35,33 @@ $(document).ready(function() {
 		switch (op) {
 			case "+":
 				return b + a;
+				break;
+			case "-":
+				return a - b;
+				break;
+			case "*":
+				return b * a;
+				break;
+			case "/":
+				return a / b;
+				break;
+			default:
+				break;
+
 		}
 	}
+
+	$("#reset").on('click', function() {
+		currentNumber = 0;
+		firstNum = 0;
+		result = 0;
+		operator1 = "";
+		$("#display").html("")
+	});
+
+	
+		
+	
 
 });
 
