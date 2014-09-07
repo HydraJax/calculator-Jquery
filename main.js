@@ -1,30 +1,43 @@
 $(document).ready(function() {
-	var operand1 = 0;
-	var firstNum;
+	var displayNum = NaN,
+		currentNumber,
+		firstNum,
+		result,
+		operator1;
 
 	$("button").on("click", function() {
 		$("#calculate").slideToggle('slow');
 	});
 
 	$(".number").on('click', function() {
-		var num1 = $(this).html();
-		// changes to a number
-		operand1 = operand1 * 10 + (num1 * 1);
-		$("#display").html(operand1);
+		currentNumber = currentNumber || 0; //if currentNumber is falsey set it to 0
+		currentNumber = currentNumber * 10 + ($(this).html() * 1); // mult by 1 changes the string to a number
+		$("#display").html(currentNumber);
 	});
-// keep track of 2 operands and then execute
 
 	$(".operator").on('click', function() {
-		if (operand1 !== 0) {
-			var secondNum = operand1;
-			$("#display").html("");
-			operand1 = 0;
-			var op1 = $(this).html();
-			var firstOperator = $("#display").html(op1);
+		if (!operator1) { // if value operator1 is undefined
+			firstNum = currentNumber;
+			currentNumber= 0;
+			operator1 = $(this).html();
+			$("#display").html(operator1);
+			return; // this return stops the if clause unless operator gets set to something else
 		}
-		var solution = 
-		$("#display").html(solution);
-		
+		else { // we have the first operand
+	
+			firstNum = doOperation(currentNumber, firstNum, operator1);
+			$("#display").html(firstNum);
+		}
 	});
 
+	function doOperation(b,a,op) {
+		console.log(b, a, op);
+		switch (op) {
+			case "+":
+				return b + a;
+		}
+	}
+
 });
+
+// clear button

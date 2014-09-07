@@ -21,7 +21,7 @@
 	padding: 25px;
 }
 
-.number{
+.key {
 	background: #f1c40f;
 	padding: 15px;
 	width: 30px;
@@ -31,19 +31,18 @@
 	font-weight: bold;
 	font-size: 2em;
 	text-align: center;
+
+}
+
+
+.number{
+	color: brown;
+	
 }
 
 .operator{
-	background: #f1c40f;
-	padding: 15px;
-	width: 30px;
-	height: 30px;
-	margin: 10px;
-	color: white;
-	font-weight: bold;
-	font-size: 2em;
-	text-align: center;
-
+	color: blue;
+	
 }
 
 #nums{
