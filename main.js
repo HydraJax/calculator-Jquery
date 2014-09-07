@@ -3,20 +3,21 @@ $(document).ready(function() {
 		currentNumber,
 		firstNum,
 		result,
-		operator1;
+		operator1 = "";
 
 	$("button").on("click", function() {
 		$("#calculate").slideToggle('slow');
 	});
 
 	$(".number").on('click', function() {
-		currentNumber = currentNumber || 0; //if currentNumber is falsey set it to 0
+		currentNumber = currentNumber || 0; //if currentNumber is falsey (since undefined) set it to 0
 		currentNumber = currentNumber * 10 + ($(this).html() * 1); // mult by 1 changes the string to a number
 		$("#display").html(currentNumber);
 	});
 
 	$(".operator").on('click', function() {
-		if (!operator1) { // if value operator1 is undefined
+		if (operator1 === "") {
+		// if (!operator1) { // if value operator1 is undefined
 			firstNum = currentNumber;
 			currentNumber= 0;
 			operator1 = $(this).html();
@@ -31,23 +32,22 @@ $(document).ready(function() {
 	});
 
 	function doOperation(b,a,op) {
-		console.log(b, a, op);
+		operator1 = "";
 		switch (op) {
 			case "+":
-				return b + a;
+				return a + b;
 				break;
 			case "-":
 				return a - b;
 				break;
 			case "*":
-				return b * a;
+				return a * b;
 				break;
 			case "/":
 				return a / b;
 				break;
 			default:
 				break;
-
 		}
 	}
 
@@ -58,10 +58,6 @@ $(document).ready(function() {
 		operator1 = "";
 		$("#display").html("")
 	});
-
-	
-		
-	
 
 });
 
