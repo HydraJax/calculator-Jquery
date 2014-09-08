@@ -3,6 +3,14 @@ $(document).ready(function() {
 		currentNumber,
 		firstNum,
 		result,
+		isFirstNum = true,
+		// visual = {
+		// 	slide: function () {
+		// 		$("button").on("click", function() {
+		// 			$("#calculate").slideToggle('slow');
+		// 	}
+
+		// }
 		operator1 = "";
 
 	$("button").on("click", function() {
@@ -16,23 +24,30 @@ $(document).ready(function() {
 	});
 
 	$(".operator").on('click', function() {
-		if (operator1 === "") {
+		if (isFirstNum === true) {
 		// if (!operator1) { // if value operator1 is undefined
 			firstNum = currentNumber;
 			currentNumber= 0;
 			operator1 = $(this).html();
 			$("#display").html(operator1);
+			isFirstNum = false;
 			return; // this return stops the if clause unless operator gets set to something else
 		}
 		else { // we have the first operand
-	
+			if ($(this).html() === "=") {
+				isFirstNum = true;
+			}
+			else {
+				operator1 = $(this).html();
+			}
 			firstNum = doOperation(currentNumber, firstNum, operator1);
 			$("#display").html(firstNum);
+			currentNumber = 0;
 		}
 	});
 
 	function doOperation(b,a,op) {
-		operator1 = "";
+		// operator1 = "";
 		switch (op) {
 			case "+":
 				return a + b;
@@ -58,6 +73,9 @@ $(document).ready(function() {
 		operator1 = "";
 		$("#display").html("")
 	});
+
+
+
 
 });
 
