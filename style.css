@@ -27,12 +27,15 @@
 }
 
 #display{
-	margin: 5px;
-	padding: 25px;
-	box-shadow: 0 1px 1px #ddd, 0 -1px 1px #555;
+	margin: 11px;
+	padding:  10px 25px 45px 25px;
+	box-shadow: 0 1px 1px #ddd, 0 -1px 5px #555;
 	background: #ecf0f1;
 	font-family: digital;
-	font-size: 2em;
+	font-size: 3em;
+	color: #34495e;
+	height: 20px;
+	width: 330px;
 
 }
 
@@ -69,10 +72,6 @@
 
 .number{
 	color: #34495e;	
-}
-
-*:before {
-    box-sizing: border-box;
 }
 
 .operator{
