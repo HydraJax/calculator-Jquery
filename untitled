@@ -1,0 +1,10 @@
+1. No operands yet, enters a operator
+--> dont accept operator; except '-' will start a negative number
+2. One operand entered, they enter '=' as operator
+--> ignore '='
+3. One operand entered, they enter a good operator, then enter another operator
+--> use most recent operator
+4. number, operand, number, operand
+--> do 1st calculation between number, operand, number; save second operand
+--> left number, 1st operator, right number, 2nd operator ....
+--> do calculation between left, op1, right; result => left & op2 becomes op1
