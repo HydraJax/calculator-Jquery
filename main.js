@@ -1,77 +1,106 @@
 $(document).ready(function() {
-	var currentNumber = null,
-		leftNumber = null,
-		negNumberLeft = false,
-		negNumberRight = false,
-		operator2 = null,
-		operatorToDo = null, // null is falsey
-		solution = null;
 
-	var calcView = function() {   // declaring variable
-		var $display = $("#display"), // convention for saving jquery handlers
-			$number = $(".number"),  // all numbers clicked
-			$operator = $(".operator"), // all operators clicked
-			$reset = $("#reset"), // the reset button
-			$calculate = $("#calculate");
+	var calculationState = 1,
+		currentNum = null,
+		operand1 = null,
+		operator1 = null,
+		operand2 = null;
 
-		var clearAndShow = function(x) { //declaring funcions 
+	var calcView = function() {   
+		var $display = $("#display"),
+			$number = $(".number"),  			// all clickable numbers
+			$operator = $(".operator"), 		// all clickable operators
+			$reset = $("#reset"), 				// the reset button
+			$calculate = $("#calculate");		// enclosing div
+
+		var clearAndShow = function(x) { 
 				$display.html(x);
 			},
 			init = function() {},
 			clear = function() {$display.html("");},
 			reset = function() {clear();};
 
-		$("button").on("click", function() {
+
+		$("button").on("click", function() {	// Don't need to cache $('button') since its ever only used once.
 			$calculate.slideToggle("slow");
 		});
 
+
+		// Handle clicks on numbers - 
+		// As long as digits are consequetively pressed, munge them together to make an operand.
 		$number.on('click', function() {
-			currentNumber = currentNumber || 0; //if currentNumber is falsey (since undefined) set it to 0
-			currentNumber = currentNumber * 10 + ($(this).html() * 1); // mult by 1 changes the string to a number
-			//$("#display").html(currentNumber);
-			clearAndShow(currentNumber);
+
+			if ( calculationState === 2 ) {
+				promoteCalculationState();
+			}
+
+			// Only allow operands in states 1 & 3
+			if ( calculationState !== 1 && calculationState !== 3 ) return;
+
+			currentNum = currentNum || 0; //if currentNum is falsey (since null) set it to 0
+			currentNum = currentNum * 10 + ($(this).html() * 1); // mult by 1 changes the string to a number
+			clearAndShow(currentNum);
 		});
 
-		$operator.on('click', function() {
-			op = $(this).html();
-			if ( currentNumber === null && ( ['=', '+', '*', '/'].indexOf(op) !== -1 ) ) { // The indexOf() method returns the first index at which a given element can be found in the array, or -1 if it is not present.
-				alert("Pick a number idiot");
-			}
-			else if (currentNumber === null && (op === "-")) {
-				negNumberLeft = true;
-				clearAndShow(op);
-			}
-			else if (currentNumber !== null && op === "=" && leftNumber == null)
-			{
-				alert("type an operator first...");
-			}
-			else if ( operator2 === null && ['-', '+', '*', '/'].indexOf(op) === -1 ) {  // this is the 1st operator ever clicked
-					leftNumber = currentNumber;
-				} 
 
-			else if ( operator2 === null && operatorToDo !== null ) {  // they entered an op right after a previous op entry
-					if (negNumberLeft === true) {
-						// leftNumber = currentNumber * -1;
-						// clearAndShow(operatorToDo + leftNumber);
-						operatorToDo = op;
-					}
-					else {
-						leftNumber = currentNumber;
-						operatorToDo = op;
-						return;
-					}
-				} 		
+
+		// An operator was pressed
+		$operator.on('click', function(event) {
+			var op = $(this).html();
+
+			if ( calculationState === 1 || calculationState === 3 ) {
+				promoteCalculationState();
+			}
+
+			// Only allow operators in states 2 & 4
+			if ( calculationState !== 2 && calculationState !== 4 ) return;
+
+			// at this point we know we are in either state 2 or 4
+
+			if ( calculationState === 2 ) {
+				if ( op === '=' ) { return;	}	// disregard '=' in state 2
+				else {
+					operator1 = op;
+					operand1 = currentNum;
+					currentNum = null;
+					clearAndShow( operator1 );
+				}
+			}
+			else {			// state 4
+				var result = doOperation( operand1, currentNum, operator1 );
+				clearAndShow(result);
+				operand1 = result;
+				
+				if ( op === '=' ) {  
+					jumpToCalcState(2);
+				}
+				else { 				//
+					operator1 = op;
+					jumpToCalcState(3);
+				}
+				currentNum = null;
+			}
 		});
 
-		return {       // we return methods as key value pairs THIS IS ALL THAT YOU CAN CALL OUTSIDE OF THIS Fx
+
+		return {       // we return methods as key value pairs
 			clearAndShow : clearAndShow, //key : value function
-			reset : reset
-		}
+			reset : reset,
+		};
 
 	}();
 	
-	function doOperation(a,b,op) {
+
+
+	function promoteCalculationState() {
+		calculationState++;
+	}
+
+	function jumpToCalcState(which) {
+		calculationState = which;
+	}
 		
+	function doOperation(a,b,op) {
 		switch (op) {
 			case "+":
 				return a + b;
@@ -90,12 +119,16 @@ $(document).ready(function() {
 		}
 	}
 
+
+	// TODO : this needs revision
 	$("#reset").on('click', function() {
-		currentNumber = 0;
+		currentNum = 0;
 		firstNum = 0;
 		result = 0;
 		operator1 = "";
 		//$("#display").html("")
 		calcView.clearAndShow("");
 	});
+
+
 });
